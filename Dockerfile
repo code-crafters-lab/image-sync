@@ -6,4 +6,6 @@ ADD . ./
 
 RUN go build -o image-sync-toolkit
 
+RUN ls
+
 CMD ["./image-sync-toolkit"]
