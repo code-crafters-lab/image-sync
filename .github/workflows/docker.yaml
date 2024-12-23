@@ -10,51 +10,61 @@ on:
       - '*.go'
 
 env:
-  ALIYUN_REGISTRY: "${{ secrets.ALIYUN_REGISTRY }}"
-  ALIYUN_NAME_SPACE: "${{ secrets.ALIYUN_NAME_SPACE }}"
+  ALIYUN_REGISTRY: "${{ secrets.ALIYUN_REGISTRY_URL }}"
+  ALIYUN_NAME_SPACE: "${{ secrets.ALIYUN_REGISTRY_NAMESPACE }}"
   ALIYUN_REGISTRY_USER: "${{ secrets.ALIYUN_REGISTRY_USER }}"
   ALIYUN_REGISTRY_PASSWORD: "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}"
 
 jobs:
-  build:
-    name: Pull
+  prepare:
     runs-on: ubuntu-24.04
     steps:
-    - name: Before freeing up disk space
-      run: |
-        echo "Before freeing up disk space"
-        echo "=============================================================================="
-        df -hT
-        echo "=============================================================================="
+      - name: Before freeing up disk space
+        run: |
+          echo "Before freeing up disk space"
+          echo "=============================================================================="
+          df -hT
+          echo "=============================================================================="
 
-    # 增加可用磁盘空间
-    - name: Maximize build space
-      uses: easimon/maximize-build-space@master
-      with:
-        root-reserve-mb: 2048
-        swap-size-mb: 128
-        remove-dotnet: 'true'
-        remove-haskell: 'true'
-        # 如果空间还是不够用，可以把以下开启，清理出更多空间
-        # remove-android: 'true'
-        # remove-codeql: 'true'
-        build-mount-path: '/var/lib/docker/'
+      # 增加可用磁盘空间
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 2048
+          swap-size-mb: 128
+          remove-dotnet: 'true'
+          remove-haskell: 'true'
+          # 如果空间还是不够用，可以把以下开启，清理出更多空间
+          # remove-android: 'true'
+          # remove-codeql: 'true'
+          build-mount-path: '/var/lib/docker/'
 
-    - name: Restart docker
-      run: sudo service docker restart
+      - name: Restart docker
+        run: sudo service docker restart
 
-    - name: Free up disk space complete
-      run: |
-        echo "Free up disk space complete"
-        echo "=============================================================================="
-        df -hT
-        echo "=============================================================================="
+      - name: Free up disk space complete
+        run: |
+          echo "Free up disk space complete"
+          echo "=============================================================================="
+          df -hT
+          echo "=============================================================================="
 
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    - name: Docker Setup Build
-      uses: docker/setup-buildx-action@v3
+      - name: Docker Setup Build
+        uses: docker/setup-buildx-action@v3
+  sync:
+    runs-on: ubuntu-latest
+    need: prepare
+    steps:
+      - name: Sync
+        uses: github.com/code-crafters-lab/image-sync@main
+        with:
+          target-registry-url: "${{ secrets.ALIYUN_REGISTRY }}"
+          target-registry-namespace: "${{ secrets.ALIYUN_REGISTRY_NAMESPACE }}"
+          docker-username: "${{ secrets.ALIYUN_REGISTRY_USER }}"
+          docker-password: "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}"
 
 #    - name: Build and push image Aliyun
 #      run: |

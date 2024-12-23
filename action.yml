@@ -4,13 +4,14 @@ branding:
   icon: refresh-cw
   color: blue
 inputs:
-  source-registry-url:
-    description: "URL of the source image registry"
-    required: true
-    default: "registry.hub.docker.com"
   target-registry-url:
     description: "URL of the target image registry"
     required: true
+    default: "registry.cn-hangzhou.aliyuncs.com"
+  target-registry-namespace:
+    description: "Namespace of the target image registry"
+    required: true
+    default: "code-crafters-lab"
   docker-username:
     description: "Username for docker registry authentication"
     required: true
@@ -21,7 +22,7 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.source-registry-url }}
     - ${{ inputs.target-registry-url }}
+    - ${{ inputs.target-registry-namespace }}
     - ${{ inputs.docker-username }}
     - ${{ inputs.docker-password }}
