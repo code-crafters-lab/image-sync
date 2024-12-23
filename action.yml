@@ -1,4 +1,4 @@
-name: Image Sync Action
+name: Image Sync Toolkit
 description: Sync images from source registry to target registry.
 branding:
   icon: refresh-cw

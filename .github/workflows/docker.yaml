@@ -59,7 +59,7 @@ jobs:
       ALIYUN_REGISTRY_PASSWORD: "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}"
     steps:
       - name: Sync
-        uses: github.com/code-crafters-lab/image-sync@main
+        uses: code-crafters-lab/image-sync-toolkit@main
         with:
           target-registry-url: "${{ secrets.ALIYUN_REGISTRY }}"
           target-registry-namespace: "${{ secrets.ALIYUN_REGISTRY_NAMESPACE }}"
