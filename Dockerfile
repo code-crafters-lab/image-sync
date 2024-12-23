@@ -2,8 +2,8 @@ FROM golang:1.22.10
 
 WORKDIR /app
 
-COPY main.go .
+ADD . ./
 
-RUN go build -o image-sync-action
+RUN go build -o image-sync-toolkit
 
-CMD ["./image-sync-action"]
+CMD ["./image-sync-toolkit"]
