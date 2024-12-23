@@ -1,0 +1,27 @@
+name: Image Sync Action
+description: Sync images from source registry to target registry.
+branding:
+  icon: refresh-cw
+  color: blue
+inputs:
+  source-registry-url:
+    description: "URL of the source image registry"
+    required: true
+    default: "registry.hub.docker.com"
+  target-registry-url:
+    description: "URL of the target image registry"
+    required: true
+  docker-username:
+    description: "Username for docker registry authentication"
+    required: true
+  docker-password:
+    description: "Password for docker registry authentication"
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.source-registry-url }}
+    - ${{ inputs.target-registry-url }}
+    - ${{ inputs.docker-username }}
+    - ${{ inputs.docker-password }}
