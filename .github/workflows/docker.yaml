@@ -55,7 +55,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Image Sync
-        uses: .
+        uses: code-crafters-lab/image-sync-toolkit@main
         with:
           target-registry-url: "${{ secrets.ALIYUN_REGISTRY }}"
           target-registry-namespace: "${{ secrets.ALIYUN_REGISTRY_NAMESPACE }}"
