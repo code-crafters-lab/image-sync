@@ -9,12 +9,6 @@ on:
       - 'Dockerfile'
       - '*.go'
 
-env:
-  ALIYUN_REGISTRY: "${{ secrets.ALIYUN_REGISTRY_URL }}"
-  ALIYUN_NAME_SPACE: "${{ secrets.ALIYUN_REGISTRY_NAMESPACE }}"
-  ALIYUN_REGISTRY_USER: "${{ secrets.ALIYUN_REGISTRY_USER }}"
-  ALIYUN_REGISTRY_PASSWORD: "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}"
-
 jobs:
   prepare:
     runs-on: ubuntu-24.04
@@ -58,6 +52,11 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - prepare
+    env:
+      ALIYUN_REGISTRY: "${{ secrets.ALIYUN_REGISTRY_URL }}"
+      ALIYUN_NAME_SPACE: "${{ secrets.ALIYUN_REGISTRY_NAMESPACE }}"
+      ALIYUN_REGISTRY_USER: "${{ secrets.ALIYUN_REGISTRY_USER }}"
+      ALIYUN_REGISTRY_PASSWORD: "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}"
     steps:
       - name: Sync
         uses: github.com/code-crafters-lab/image-sync@main
