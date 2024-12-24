@@ -11,7 +11,7 @@ jobs:
         os: [ windows, linux, darwin ]
         arch: [ amd64, arm64 ]
     runs-on: ubuntu-latest
-    name: Build ${{ matrix.os }}-${{ matrix.arch }}
+    name: "Build ${{ matrix.os }}-${{ matrix.arch }}${{GOEXE}}"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,20 +24,16 @@ jobs:
       - name: Build binary for ${{ matrix.os }}-${{ matrix.arch }}
         run: |
           go env
-          if [ "${{ matrix.os }}" == "windows" ]; then
-            go build -o image-toolkit-${{ matrix.os }}-${{ matrix.arch }}.exe main.go
-          else
-            go build -o image-toolkit-${{ matrix.os }}-${{ matrix.arch }} main.go
-          fi
-          echo "Build completed for ${{ matrix.os }}-${{ matrix.arch }}"
+          go build -o image-toolkit-${{ matrix.os }}-${{ matrix.arch }}${{GOEXE}} main.go
+          echo "Build completed for ${{ matrix.os }}-${{ matrix.arch }}${{GOEXE}}"
         env:
           GOPATH: ${{ github.workspace }}
           GOOS: ${{ matrix.os }}
           GOARCH: ${{ matrix.arch }}
 
-      - name: Upload binary as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: image-toolkit-${{ matrix.os }}
-          path: |
-            image-toolkit*
+#      - name: Upload binary as artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: image-toolkit-${{ matrix.os }}
+#          path: |
+#            image-toolkit*
