@@ -27,8 +27,8 @@ jobs:
 
       - name: Build binary for ${{ matrix.os }}-${{ matrix.arch }}
         run: |
-          go build -o image-toolkit-${{ matrix.os }}-${{ matrix.arch }}${{GOEXE}} main.go
-          echo "Build completed for ${{ matrix.os }}-${{ matrix.arch }}${{GOEXE}}"
+          go build -o image-toolkit-${{ matrix.os }}-${{ matrix.arch }}${GOEXE} main.go
+          echo "Build completed for ${{ matrix.os }}-${{ matrix.arch }}${GOEXE}"
 #      - name: Upload binary as artifact
 #        uses: actions/upload-artifact@v4
 #        with:
