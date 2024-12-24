@@ -1,16 +1,17 @@
 name: Build Image Toolkit for Multiple Systems
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        goos: [ windows,linux, darwin ]
+        os: [ windows, linux, darwin ]
         goarch: [ amd64, arm64 ]
-        go-version: [ 1.22 ]
+    runs-on: ${{ matrix.os }}
+    run-name: Build ${{ matrix.os }}-${{ matrix.goarch }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -18,23 +19,19 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: ${{ matrix.go-version }}
+          go-version: 1.22
 
       - name: Build binary for ${{ matrix.os }}
         run: |
-          if [ "${{ matrix.os }}" == "windows-latest" ]; then
-            GOOS=windows GOARCH=amd64 go build -o myapp.exe
-          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
-            GOOS=darwin GOARCH=amd64 go build -o myapp
-          elif [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
-            GOOS=linux GOARCH=amd64 go build -o myapp
-          fi
+          echo "Build completed for ${{ matrix.os }}-${{ matrix.goarch }}"
         env:
           GOPATH: ${{ github.workspace }}
+          GOOS: ${{ matrix.os }}
+          GOARCH: ${{ matrix.goarch }}
 
-      - name: Upload binary as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: myapp-${{ matrix.os }}
-          path: |
-            myapp*
+#      - name: Upload binary as artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: image-toolkit-${{ matrix.os }}
+#          path: |
+#            image-toolkit*
