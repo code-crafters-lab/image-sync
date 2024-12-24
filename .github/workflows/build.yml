@@ -9,9 +9,9 @@ jobs:
     strategy:
       matrix:
         os: [ windows, linux, darwin ]
-        goarch: [ amd64, arm64 ]
-    runs-on: ${{ matrix.os }}
-    run-name: Build ${{ matrix.os }}-${{ matrix.goarch }}
+        arch: [ amd64, arm64 ]
+    runs-on: ubuntu-latest
+    run-name: Build ${{ matrix.os }}-${{ matrix.arch }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,11 +23,11 @@ jobs:
 
       - name: Build binary for ${{ matrix.os }}
         run: |
-          echo "Build completed for ${{ matrix.os }}-${{ matrix.goarch }}"
+          echo "Build completed for ${{ matrix.os }}-${{ matrix.arch }}"
         env:
           GOPATH: ${{ github.workspace }}
           GOOS: ${{ matrix.os }}
-          GOARCH: ${{ matrix.goarch }}
+          GOARCH: ${{ matrix.arch }}
 
 #      - name: Upload binary as artifact
 #        uses: actions/upload-artifact@v4
