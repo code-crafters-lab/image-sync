@@ -10,7 +10,7 @@ jobs:
       matrix:
         os: [ windows, linux, darwin ]
         arch: [ amd64, arm64 ]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       GOPATH: ${{ github.workspace }}
       GOOS: ${{ matrix.os }}
@@ -28,10 +28,11 @@ jobs:
       - name: Build binary for ${{ matrix.os }}-${{ matrix.arch }}${GOEXE}
         run: |
           go build -o image-toolkit-${{ matrix.os }}-${{ matrix.arch }}${GOEXE} main.go
+          ls -lh image-toolkit-${{ matrix.os }}-${{ matrix.arch }}*
           echo "Build completed for ${{ matrix.os }}-${{ matrix.arch }}${GOEXE}"
 
       - name: Upload binary as artifact
         uses: actions/upload-artifact@v4
         with:
           name: image-toolkit-${{ matrix.os }}-${{ matrix.arch }}${GOEXE}
-          path: image-toolkit-${{ matrix.os }}-${{ matrix.arch }}${GOEXE}
+          path: ${{ github.workspace }}/image-toolkit-${{ matrix.os }}-${{ matrix.arch }}${GOEXE}
